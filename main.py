@@ -54,3 +54,5 @@ field = get_the_field(9, 10)
 display_the_board(field)
 field = make_a_turn(field)
 display_the_board(field)
+
+print("Arseny is debil!!!")

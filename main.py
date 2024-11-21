@@ -1,5 +1,6 @@
 import random
 
+
 def get_the_field(size_of_the_field, number_of_bombs):
     board = []
     for i in range(size_of_the_field):
@@ -20,37 +21,76 @@ def get_the_field(size_of_the_field, number_of_bombs):
     return board
 
 
-def display_the_board(board):
-    for row in board:
-        for item in row:
-            if item != "b":
-                if item == item.upper():
-                    print(item, end = " ")
-
-                else:
-                    print("-", end = " ")
-
-            elif item == "b":
-                print("-", end = " ")
-        print()
+def display_the_board(board2):
+    for i in range(len(board2)):
+        print(*board2[i])
 
 
-def make_a_turn(board):
-    x = int(input("Input the x coordinate: "))
-    y = int(input("Input the x coordinate: "))
+def CheckRange(board, row, column):
+    StartRow=0
+    StartColumn=0
+    if row!=0:
+        StartRow=row-1
+    if row+1<sizeof_the_field:
+        EndRow=row+1
+    else:
+        EndRow=row
+    if column!=0:
+        StartColumn=column-1
+    if column+1<sizeof_the_field:
+        EndColumn=column+1
+    else:
+        EndColumn=column
+    return StartRow, StartColumn, EndRow, EndColumn
 
-    if board[x][y] != "b":
-        board[x][y] = "E"
 
-    elif board[x][y] == "b":
+def NumberPlace(board, board2, row, column):
+    counter_of_bombs=0
+    StartRow, StartColumn, EndRow, EndColumn = CheckRange(board, row, column)
+    for i in range(StartRow, EndRow+1):
+            for j in range(StartColumn, EndColumn+1):
+                        if board[i][j]=="b":
+                            counter_of_bombs+=1
+
+    if board2[row][column]=="-" and board[row][column]!="b":
+        board2[row][column]=counter_of_bombs
+        if counter_of_bombs==0 :
+            for x in range(StartRow, EndRow+1):
+                for y in range(StartColumn, EndColumn+1):
+                        board2=NumberPlace(board, board2, x, y)
+    return board2
+
+
+def make_a_turn(board, board2):
+    row = int(input("Input the x coordinate: "))
+    column = int(input("Input the y coordinate: "))
+
+    if board[row][column] != "b":
+        board2=NumberPlace(board, board2, row, column)
+
+    elif board[row][column] == "b":
         print("You lost")
+        return False
 
     return board
 
 
-field = get_the_field(9, 10)
-#beginer: 9x9, 10; medium: 16, 40; hard: 22, 99
+found_bombs = 0
+continue_playing = True
+sizeof_the_field = 16
+number_of_bombs=40
+field = get_the_field(sizeof_the_field, number_of_bombs)
+field2=[]
+for row in range(sizeof_the_field):
+    row=[]
+    for column in range(sizeof_the_field):
+        row.append("-")
+    field2.append(row)
 
-display_the_board(field)
-field = make_a_turn(field)
-display_the_board(field)
+while continue_playing:
+    display_the_board(field2)
+    field = make_a_turn(field, field2)
+    if field == False:
+        continue_playing = False
+
+

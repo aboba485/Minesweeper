@@ -81,7 +81,7 @@ mode = input("""Enter 1 if you want to play the easy mode
 Press 2 if you want to play medium
 Enter 3 if you want to play hard""")
 if mode == "1":
-    size_of_field =9
+    sizeof_the_field =9
     number_of_bombs=10
 elif mode=="2":
     sizeof_the_field = 16
@@ -90,6 +90,7 @@ elif mode == "3":
     sizeof_the_field = 22
     number_of_bombs=99
 field = get_the_field(sizeof_the_field, number_of_bombs)
+print(field)
 field2=[]
 for row in range(sizeof_the_field):
     row=[]

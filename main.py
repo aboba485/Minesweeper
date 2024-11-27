@@ -17,6 +17,10 @@ def get_the_field(size_of_the_field, number_of_bombs):
             y = random.randint(0, size_of_the_field - 1)
             x = random.randint(0, size_of_the_field - 1)
         board[x][y] = "b"
+    for i in range(size_of_the_field):
+        for j in range(size_of_the_field):
+            if board[i][j] != "b":
+                board=NumberPlace(board, i, j)
 
     return board
 
@@ -44,7 +48,7 @@ def CheckRange(board, row, column):
     return StartRow, StartColumn, EndRow, EndColumn
 
 
-def NumberPlace(board, board2, row, column):
+def NumberPlace(board, row, column):
     counter_of_bombs=0
     StartRow, StartColumn, EndRow, EndColumn = CheckRange(board, row, column)
     for i in range(StartRow, EndRow+1):
@@ -52,21 +56,26 @@ def NumberPlace(board, board2, row, column):
                         if board[i][j]=="b":
                             counter_of_bombs+=1
 
-    if board2[row][column]=="-" and board[row][column]!="b":
-        board2[row][column]=counter_of_bombs
-        if counter_of_bombs==0 :
-            for x in range(StartRow, EndRow+1):
-                for y in range(StartColumn, EndColumn+1):
-                        board2=NumberPlace(board, board2, x, y)
+    if board[row][column]=="e" and board[row][column]!="b":
+        board[row][column]=counter_of_bombs
+    return board
+
+def Zeros(board, board2, row, column):
+    StartRow, StartColumn, EndRow, EndColumn = CheckRange(board, row, column)
+    board2[row][column]=board[row][column]
+    if board[row][column]==0:
+        for x in range(StartRow, EndRow+1):
+            for y in range(StartColumn, EndColumn+1):
+                if board2[x][y]=="-":
+                    board2=Zeros(board, board2, x, y)
     return board2
 
-
 def make_a_turn(board, board2):
-    row = int(input("Input the x coordinate: "))
-    column = int(input("Input the y coordinate: "))
+    column = int(input("Input the x coordinate: "))
+    row = int(input("Input the y coordinate: "))
 
     if board[row][column] != "b":
-        board2=NumberPlace(board, board2, row, column)
+        borad2 = Zeros(board, board2, row, column)
 
     elif board[row][column] == "b":
         print("You lost")
@@ -74,8 +83,15 @@ def make_a_turn(board, board2):
 
     return board
 
-sizeof_the_field = 9
+sizeof_the_field = 22
 
-field = get_the_field(9, 10)
-for row in field:
-    print(row)
+field = get_the_field(22, 99)
+field2=[]
+for i in range(sizeof_the_field):
+    row=[]
+    for j in range(sizeof_the_field):
+        row.append("-")
+    field2.append(row)
+win=True
+while  make_a_turn(field, field2):
+    display_the_board(field2)

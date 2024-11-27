@@ -74,34 +74,8 @@ def make_a_turn(board, board2):
 
     return board
 
+sizeof_the_field = 9
 
-found_bombs = 0
-continue_playing = True
-mode = input("""Enter 1 if you want to play the easy mode 
-Press 2 if you want to play medium
-Enter 3 if you want to play hard""")
-if mode == "1":
-    sizeof_the_field =9
-    number_of_bombs=10
-elif mode=="2":
-    sizeof_the_field = 16
-    number_of_bombs=40
-elif mode == "3":
-    sizeof_the_field = 22
-    number_of_bombs=99
-field = get_the_field(sizeof_the_field, number_of_bombs)
-print(field)
-field2=[]
-for row in range(sizeof_the_field):
-    row=[]
-    for column in range(sizeof_the_field):
-        row.append("-")
-    field2.append(row)
-
-while continue_playing:
-    display_the_board(field2)
-    field = make_a_turn(field, field2)
-    if field == False:
-        continue_playing = False
-
-
+field = get_the_field(9, 10)
+for row in field:
+    print(row)

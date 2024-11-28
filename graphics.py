@@ -14,26 +14,27 @@ def draw_a_cube(size, x_coord, y_coord, primary_color, secondary_color):
     pygame.draw.rect(SCREEN, secondary_color, pygame.Rect(x_coord, y_coord, size, size), 4)
 
 
-def draw_a_board(field, size_of_the_display, start_x, start_y, primary_color, secondary_color):
-    rows = len(field)
-    cols = len(field[0])
+def draw_a_board(FIELD, size_of_the_display, start_x, start_y, primary_color, secondary_color):
+    rows = len(FIELD)
+    cols = len(FIELED[0])
     size_of_the_cube = size_of_the_display // cols
     for i in range(rows):
         for j in range(cols):
             x = start_x + j * size_of_the_cube
             y = start_y + i * size_of_the_cube
+            print(FIELD)
+            if FIELED[i][j] == "-":
+                 draw_a_cube(size_of_the_cube, x, y, primary_color, secondary_color)
 
-            if field[i][j].islower():
-                draw_a_cube(size_of_the_cube, x, y, primary_color, secondary_color)
-
-            elif field[i][j].isupper():
-                draw_a_cube(size_of_the_cube, x, y, WHITE, secondary_color)
+            else:
+                 draw_a_cube(size_of_the_cube, x, y, primary_color, secondary_color)
 
 
 pygame.init()
 SIZE_OF_THE_DISPLAY = 680
 SCREEN = pygame.display.set_mode((SIZE_OF_THE_DISPLAY, SIZE_OF_THE_DISPLAY))
-field = main.get_the_field(9, 10)
+FIELED = main.get_the_field(9, 10)
+changed_field= main
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 BLUE = (0, 0, 255)
@@ -52,7 +53,7 @@ while running:
     text = font.render(counter_of_the_time(start_ticks), True, BLACK)
     SCREEN.blit(text, (280, 0))
 
-    draw_a_board(field, SIZE_OF_THE_DISPLAY - 100, 50, 50, CELLS_COLOR, BACKGROUND_COLOR)
+    draw_a_board(FIELED, SIZE_OF_THE_DISPLAY - 100, 50, 50, CELLS_COLOR, BACKGROUND_COLOR)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:

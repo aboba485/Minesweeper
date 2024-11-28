@@ -53,19 +53,30 @@ def NumberPlace(board, row, column):
     StartRow, StartColumn, EndRow, EndColumn = CheckRange(board, row, column)
     for i in range(StartRow, EndRow+1):
             for j in range(StartColumn, EndColumn+1):
-                        if board[i][j]=="b":
-                            counter_of_bombs+=1
+                print(i, j)
+                if board[i][j]=="b":
+                        counter_of_bombs+=1
 
     if board[row][column]=="e" and board[row][column]!="b":
         board[row][column]=counter_of_bombs
     return board
 
+def get_Field2():
+    field2 = []
+    for i in range(sizeof_the_field):
+         row=[]
+         for j in range(sizeof_the_field):
+             row.append("-")
+         field2.append(row)
+    return field2
+
+
 def Zeros(board, board2, row, column):
     StartRow, StartColumn, EndRow, EndColumn = CheckRange(board, row, column)
     board2[row][column]=board[row][column]
     if board[row][column]==0:
-        for x in range(StartRow, EndRow+1):
-            for y in range(StartColumn, EndColumn+1):
+        for x in range(StartRow, EndRow):
+            for y in range(StartColumn, EndColumn):
                 if board2[x][y]=="-":
                     board2=Zeros(board, board2, x, y)
     return board2
@@ -83,15 +94,10 @@ def make_a_turn(board, board2):
 
     return board
 
-sizeof_the_field = 22
-
-field = get_the_field(22, 99)
-field2=[]
-for i in range(sizeof_the_field):
-    row=[]
-    for j in range(sizeof_the_field):
-        row.append("-")
-    field2.append(row)
-win=True
-while  make_a_turn(field, field2):
-    display_the_board(field2)
+sizeof_the_field = 9
+#
+# field = get_the_field(22, 99)
+#field2 = get_field2()
+# win=True
+# while  make_a_turn(field, field2):
+#     display_the_board(field2)

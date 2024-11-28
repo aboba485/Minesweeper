@@ -53,7 +53,6 @@ def NumberPlace(board, row, column):
     StartRow, StartColumn, EndRow, EndColumn = CheckRange(board, row, column)
     for i in range(StartRow, EndRow+1):
             for j in range(StartColumn, EndColumn+1):
-                print(i, j)
                 if board[i][j]=="b":
                         counter_of_bombs+=1
 
@@ -86,15 +85,15 @@ def make_a_turn(board, board2):
     row = int(input("Input the y coordinate: "))
 
     if board[row][column] != "b":
-        borad2 = Zeros(board, board2, row, column)
+        board2 = Zeros(board, board2, row, column)
 
     elif board[row][column] == "b":
         print("You lost")
         return False
 
-    return board
+    return board2
 
-sizeof_the_field = 9
+sizeof_the_field = 16
 #
 # field = get_the_field(22, 99)
 #field2 = get_field2()

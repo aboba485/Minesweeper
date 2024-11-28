@@ -16,23 +16,22 @@ def draw_a_cube(size, x_coord, y_coord, primary_color, secondary_color):
 
 def draw_a_board(FIELD, size_of_the_display, start_x, start_y, primary_color, secondary_color):
     rows = len(FIELD)
-    cols = len(FIELED[0])
+    cols = len(FIELD[0])
     size_of_the_cube = size_of_the_display // cols
     for i in range(rows):
         for j in range(cols):
             x = start_x + j * size_of_the_cube
             y = start_y + i * size_of_the_cube
-            if changed_field[i][j] == "-":
-                 draw_a_cube(size_of_the_cube, x, y, primary_color, secondary_color)
 
-            else:
-                draw_a_cube(size_of_the_cube, x, y, primary_color, secondary_color)
-                font_size=size_of_the_cube//1.45
-                # x=size_of_the_cube/2+x/1.17
-                # y=size_of_the_cube/2+y/1.25
-                x=size_of_the_cube/2+x/1.3333
-                y=size_of_the_cube/2+y/1.3333
-                draw_a_number("0", x, y, WHITE, int(font_size))
+            draw_a_cube(size_of_the_cube, x, y, primary_color, secondary_color)
+
+            if changed_field[i][j] != "-":
+                font_size = int(size_of_the_cube * 0.65)
+                number_x = x + (size_of_the_cube / 2) - (font_size / 6)
+                number_y = y + (size_of_the_cube / 2) - (font_size / 4.5)
+                draw_a_number(str(FIELD[i][j]), number_x, number_y, WHITE, font_size)
+
+
 
 
 
@@ -48,7 +47,7 @@ def draw_a_number(number, x, y, color, font_size):
 pygame.init()
 SIZE_OF_THE_DISPLAY = 680
 SCREEN = pygame.display.set_mode((SIZE_OF_THE_DISPLAY, SIZE_OF_THE_DISPLAY))
-FIELED = main.get_the_field(16, 10)
+FIELED = main.get_the_field(9, 10)
 changed_field= main.get_Field2()
 changed_field[0][0] = FIELED[0][0]
 print(changed_field)
@@ -71,7 +70,7 @@ while running:
     text = font_for_clock.render(counter_of_the_time(start_ticks), True, BLACK)
     SCREEN.blit(text, (280, 0))
 
-    draw_a_board(FIELED, SIZE_OF_THE_DISPLAY - 100, 50, 50, CELLS_COLOR, BACKGROUND_COLOR)
+    draw_a_board(FIELED, SIZE_OF_THE_DISPLAY - 100, 50, 50, RED, BACKGROUND_COLOR)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:

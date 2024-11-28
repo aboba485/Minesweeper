@@ -93,7 +93,7 @@ def make_a_turn(board, board2):
 
     return board2
 
-sizeof_the_field = 16
+sizeof_the_field = 9
 #
 # field = get_the_field(22, 99)
 #field2 = get_field2()

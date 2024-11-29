@@ -103,7 +103,27 @@ def place_flag(start_x,start_y, x, y, size_of_the_field, size_of_the_cube, chang
     change_board[list_number][item_number]=">"
     return change_board
 
+def CountCorrectFlags(board, change_board, size_of_the_field):
+    counter=0
+    for i in range(size_of_the_field):
+        for j in range(size_of_the_field):
+            if board[i][j] == "b" and change_board[i][j] ==">":
+                counter+=1
+    return counter
+
+def CountFlags( change_board, size_of_the_field):
+    counter=0
+    for i in range(size_of_the_field):
+        for j in range(size_of_the_field):
+            if change_board[i][j] == ">":
+                counter+=1
+
+    return counter
+
+
+
 sizeof_the_field = 9
+
 
 print(get_field2(9))
 print(get_the_field(9, 10))

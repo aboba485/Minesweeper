@@ -19,6 +19,7 @@ CELLS_COLOR = (31, 31, 31)
 NUMBERS_COLOR = (35, 35, 35)
 START_X = 50
 START_Y = 50
+counter=0
 SIZE_OF_THE_CUBE = (SIZE_OF_THE_DISPLAY - START_X - START_X) // SIZE_OF_THE_FIELD
 changed_field = logic.get_field2(SIZE_OF_THE_FIELD)
 start_ticks = pygame.time.get_ticks()
@@ -38,12 +39,21 @@ while running:
             running = False
 
         if event.type == pygame.MOUSEBUTTONDOWN:
-            x, y = pygame.mouse.get_pos()
-            if x > START_X and y > START_Y and x < SIZE_OF_THE_DISPLAY - START_X and y < SIZE_OF_THE_DISPLAY - START_Y:
-                if pygame.mouse.get_pressed()[0]:
-                    changed_field = logic.define_coordinate(START_X, START_Y, x, y, SIZE_OF_THE_DISPLAY,SIZE_OF_THE_CUBE, changed_field, FIELD, SIZE_OF_THE_FIELD )
-                elif pygame.mouse.get_pressed()[2]:
-                    changed_field = logic.place_flag(START_X, START_Y, x, y, SIZE_OF_THE_DISPLAY, SIZE_OF_THE_CUBE, changed_field)
+                x, y = pygame.mouse.get_pos()
+                if START_X < x < SIZE_OF_THE_DISPLAY - START_X and START_Y < y < SIZE_OF_THE_DISPLAY - START_Y:
+                    if pygame.mouse.get_pressed()[0]:
+                        changed_field = logic.define_coordinate(START_X, START_Y, x, y, SIZE_OF_THE_DISPLAY,SIZE_OF_THE_CUBE, changed_field, FIELD, SIZE_OF_THE_FIELD )
+                    elif pygame.mouse.get_pressed()[2]:
+                        counter2=logic.CountFlags(changed_field, SIZE_OF_THE_FIELD)
+                        if counter2 < NUMBER_OF_BOMBS:
+                                changed_field = logic.place_flag(START_X, START_Y, x, y, SIZE_OF_THE_DISPLAY, SIZE_OF_THE_CUBE, changed_field)
+        counter = 0
+        counter = logic.CountCorrectFlags(FIELD, changed_field, SIZE_OF_THE_FIELD)
+        if counter == NUMBER_OF_BOMBS:
+            running = False
+
+
+
 
 
 

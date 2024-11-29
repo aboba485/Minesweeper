@@ -37,3 +37,5 @@ def draw_a_number(number, x, y, color, font_size, screen):
     font = pygame.font.Font(None, font_size)
     text = font.render(number, True, color)
     screen.blit(text, (x, y))
+
+

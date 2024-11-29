@@ -82,18 +82,21 @@ def zeros(board, board2, row, column, size_of_the_field):
     return board2
 
 
-def make_a_turn(board, board2):
-    column = int(input("Input the x coordinate: "))
-    row = int(input("Input the y coordinate: "))
+def get_coordinate(start, coordinate, size_of_the_board, size_of_the_cube):
+    counter = - 1
+    for i in range(start, size_of_the_board, size_of_the_cube+1):
+        if i > coordinate > i - size_of_the_cube:
+            return counter
+        counter += 1
 
-    if board[row][column] != "b":
-        board2 = zeros(board, board2, row, column)
+def define_coordinate(start_x,start_y, x, y, size_of_the_field, size_of_the_cube, change_board, board, size_of_the_board):
+    list_number = get_coordinate(start_y, y, size_of_the_field, size_of_the_cube)
+    item_number= get_coordinate(start_x, x, size_of_the_field, size_of_the_cube)
 
-    elif board[row][column] == "b":
-        print("You lost")
-        return False
-
-    return board2
-
+    change_board[list_number][item_number] = zeros(board, change_board, list_number, item_number, size_of_the_board)
+    return change_board
 
 sizeof_the_field = 9
+
+print(get_field2(9))
+print(get_the_field(9, 10))

@@ -5,8 +5,8 @@ import graphics
 pygame.init()
 
 SIZE_OF_THE_DISPLAY = 680
-SIZE_OF_THE_FIELD = 9
-NUMBER_OF_BOMBS = 10
+SIZE_OF_THE_FIELD = 10
+NUMBER_OF_BOMBS = 25
 
 SCREEN = pygame.display.set_mode((SIZE_OF_THE_DISPLAY, SIZE_OF_THE_DISPLAY))
 FIELD = logic.get_the_field(SIZE_OF_THE_FIELD, NUMBER_OF_BOMBS)
@@ -17,22 +17,33 @@ RED = (255, 0, 0)
 BACKGROUND_COLOR = (28, 29, 31)
 CELLS_COLOR = (31, 31, 31)
 NUMBERS_COLOR = (35, 35, 35)
+START_X = 50
+START_Y = 50
+SIZE_OF_THE_CUBE = (SIZE_OF_THE_DISPLAY - START_X - START_X) // SIZE_OF_THE_FIELD
 changed_field = logic.get_field2(SIZE_OF_THE_FIELD)
-changed_field[0][0] = FIELD[0][0]
 start_ticks = pygame.time.get_ticks()
 pygame.display.set_caption('MineSweeper')
+print(changed_field)
 
 running = True
 while running:
     SCREEN.fill(BACKGROUND_COLOR)
 
     graphics.draw_a_counter_of_the_time(start_ticks, SCREEN, WHITE)
-    graphics.draw_a_board(FIELD, SIZE_OF_THE_DISPLAY - 100, 50, 50, CELLS_COLOR, BACKGROUND_COLOR, WHITE,
+    graphics.draw_a_board(FIELD, SIZE_OF_THE_DISPLAY - 100, START_X, START_Y, BLUE, WHITE, RED,
                           changed_field, SCREEN)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            x, y = pygame.mouse.get_pos()
+            print(f'Mouse clicked at {x}, {y}')
+            if x>START_X and y>START_Y and x<SIZE_OF_THE_DISPLAY-START_X and y<SIZE_OF_THE_DISPLAY-START_Y:
+                changed_field = logic.define_coordinate(START_X, START_Y, x, y, SIZE_OF_THE_DISPLAY,SIZE_OF_THE_CUBE, changed_field, FIELD, SIZE_OF_THE_FIELD )
+
+
 
     pygame.display.flip()
 

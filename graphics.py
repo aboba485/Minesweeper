@@ -1,3 +1,5 @@
+from idlelib.configdialog import is_int
+
 import pygame
 
 
@@ -30,8 +32,11 @@ def draw_a_board(field, size_of_the_display, start_x, start_y, cells_color_backg
                 font_size = int(size_of_the_cube * 0.65)
                 number_x = x + (size_of_the_cube / 2) - (font_size / 6)
                 number_y = y + (size_of_the_cube / 2) - (font_size / 4.5)
-                draw_a_number(str(field[i][j]), number_x, number_y, font_color, font_size, screen)
 
+                if changed_field[i][j]!=">":
+                    draw_a_number(str(field[i][j]), number_x, number_y, font_color, font_size, screen)
+                else:
+                    draw_a_number(">", number_x, number_y, font_color, font_size, screen)
 
 def draw_a_number(number, x, y, color, font_size, screen):
     font = pygame.font.Font(None, font_size)

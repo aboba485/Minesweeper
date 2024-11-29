@@ -6,7 +6,7 @@ pygame.init()
 
 SIZE_OF_THE_DISPLAY = 680
 SIZE_OF_THE_FIELD = 10
-NUMBER_OF_BOMBS = 25
+NUMBER_OF_BOMBS = 15
 
 SCREEN = pygame.display.set_mode((SIZE_OF_THE_DISPLAY, SIZE_OF_THE_DISPLAY))
 FIELD = logic.get_the_field(SIZE_OF_THE_FIELD, NUMBER_OF_BOMBS)
@@ -39,9 +39,11 @@ while running:
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             x, y = pygame.mouse.get_pos()
-            print(f'Mouse clicked at {x}, {y}')
-            if x>START_X and y>START_Y and x<SIZE_OF_THE_DISPLAY-START_X and y<SIZE_OF_THE_DISPLAY-START_Y:
-                changed_field = logic.define_coordinate(START_X, START_Y, x, y, SIZE_OF_THE_DISPLAY,SIZE_OF_THE_CUBE, changed_field, FIELD, SIZE_OF_THE_FIELD )
+            if x > START_X and y > START_Y and x < SIZE_OF_THE_DISPLAY - START_X and y < SIZE_OF_THE_DISPLAY - START_Y:
+                if pygame.mouse.get_pressed()[0]:
+                    changed_field = logic.define_coordinate(START_X, START_Y, x, y, SIZE_OF_THE_DISPLAY,SIZE_OF_THE_CUBE, changed_field, FIELD, SIZE_OF_THE_FIELD )
+                elif pygame.mouse.get_pressed()[2]:
+                    changed_field = logic.place_flag(START_X, START_Y, x, y, SIZE_OF_THE_DISPLAY, SIZE_OF_THE_CUBE, changed_field)
 
 
 

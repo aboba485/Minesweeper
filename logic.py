@@ -83,40 +83,43 @@ def zeros(board, board2, row, column, size_of_the_field):
 
 
 def get_coordinate(start, coordinate, size_of_the_board, size_of_the_cube):
-    counter = - 1
+    counter = -1
     for i in range(start, size_of_the_board, size_of_the_cube+1):
         if i > coordinate > i - size_of_the_cube:
             return counter
         counter += 1
+    return counter
 
-def define_coordinate(start_x,start_y, x, y, size_of_the_field, size_of_the_cube, change_board, board, size_of_the_board):
+
+def define_coordinate(start_x, start_y, x, y, size_of_the_field, size_of_the_cube, change_board, board, size_of_the_board):
     list_number = get_coordinate(start_y, y, size_of_the_field, size_of_the_cube)
     item_number = get_coordinate(start_x, x, size_of_the_field, size_of_the_cube)
 
-    change_board[list_number][item_number] = zeros(board, change_board, list_number, item_number, size_of_the_board)
+    change_board = zeros(board, change_board, list_number, item_number, size_of_the_board)
 
     return change_board
 
 
-def place_flag(start_x,start_y, x, y, size_of_the_field, size_of_the_cube, change_board):
+def place_flag(start_x, start_y, x, y, size_of_the_field, size_of_the_cube, change_board):
     list_number = get_coordinate(start_y, y, size_of_the_field, size_of_the_cube)
-    item_number= get_coordinate(start_x, x, size_of_the_field, size_of_the_cube)
-    change_board[list_number][item_number]=">"
+    item_number = get_coordinate(start_x, x, size_of_the_field, size_of_the_cube)
+    change_board[list_number][item_number] = ">"
     return change_board
+
 
 def count_correct_flags(board, change_board, size_of_the_field):
-    counter=0
+    counter = 0
     for i in range(size_of_the_field):
         for j in range(size_of_the_field):
-            if board[i][j] == "b" and change_board[i][j] ==">":
-                counter+=1
+            if board[i][j] == "b" and change_board[i][j] == ">":
+                counter += 1
     return counter
 
-def count_flags( change_board, size_of_the_field):
-    counter=0
+
+def count_flags(change_board, size_of_the_field):
+    counter = 0
     for i in range(size_of_the_field):
         for j in range(size_of_the_field):
             if change_board[i][j] == ">":
-                counter+=1
-
+                counter += 1
     return counter

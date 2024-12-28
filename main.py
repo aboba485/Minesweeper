@@ -5,11 +5,12 @@ import graphics
 pygame.init()
 
 SIZE_OF_THE_DISPLAY = 680
-SIZE_OF_THE_FIELD = 10
-NUMBER_OF_BOMBS = 10
+SIZE_OF_THE_FIELD = 5
+NUMBER_OF_BOMBS = 1
 
 SCREEN = pygame.display.set_mode((SIZE_OF_THE_DISPLAY, SIZE_OF_THE_DISPLAY))
 FIELD = logic.get_the_field(SIZE_OF_THE_FIELD, NUMBER_OF_BOMBS)
+BANNERS_FONT_SIZE = 100
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 BLUE = (0, 0, 255)
@@ -32,7 +33,7 @@ while running:
 
     graphics.draw_a_counter_of_the_time(start_ticks, SCREEN, WHITE)
     graphics.draw_a_board(FIELD, SIZE_OF_THE_DISPLAY - 100, START_X, START_Y, BLUE, WHITE, RED,
-                          changed_field, SCREEN)
+                          changed_field, SCREEN, BLACK, BANNERS_FONT_SIZE)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:

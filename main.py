@@ -6,7 +6,7 @@ pygame.init()
 
 SIZE_OF_THE_DISPLAY = 680
 SIZE_OF_THE_FIELD = 10
-NUMBER_OF_BOMBS = 15
+NUMBER_OF_BOMBS = 10
 
 SCREEN = pygame.display.set_mode((SIZE_OF_THE_DISPLAY, SIZE_OF_THE_DISPLAY))
 FIELD = logic.get_the_field(SIZE_OF_THE_FIELD, NUMBER_OF_BOMBS)
@@ -46,10 +46,6 @@ while running:
                     counter2 = logic.count_flags(changed_field, SIZE_OF_THE_FIELD)
                     if counter2 < NUMBER_OF_BOMBS:
                         changed_field = logic.place_flag(START_X, START_Y, x, y, SIZE_OF_THE_DISPLAY, SIZE_OF_THE_CUBE, changed_field)
-        counter = 0
-        counter = logic.count_correct_flags(FIELD, changed_field, SIZE_OF_THE_FIELD)
-        if counter == NUMBER_OF_BOMBS:
-            running = False
 
     pygame.display.flip()
 

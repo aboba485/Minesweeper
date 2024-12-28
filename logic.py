@@ -73,13 +73,16 @@ def get_field2(size_of_the_field):
 
 def zeros(board, board2, row, column, size_of_the_field):
     StartRow, StartColumn, EndRow, EndColumn = check_range(row, column, size_of_the_field)
-    board2[row][column] = board[row][column]
-    if board[row][column] == 0:
-        for x in range(StartRow, EndRow + 1):
-            for y in range(StartColumn, EndColumn + 1):
-                if board2[x][y] == "-":
-                    board2 = zeros(board, board2, x, y, size_of_the_field)
-    return board2
+    try:
+        board2[row][column] = board[row][column]
+        if board[row][column] == 0:
+            for x in range(StartRow, EndRow + 1):
+                for y in range(StartColumn, EndColumn + 1):
+                    if board2[x][y] == "-":
+                        board2 = zeros(board, board2, x, y, size_of_the_field)
+        return board2
+    except:
+        pass
 
 
 def get_coordinate(start, coordinate, size_of_the_board, size_of_the_cube):

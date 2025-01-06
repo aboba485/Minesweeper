@@ -1,23 +1,32 @@
 import random
 
 
-
-def get_the_field(size_of_the_field, number_of_bombs):
+def get_empty_field(size_of_the_field):
     board = []
     for i in range(size_of_the_field):
         row = []
         for y in range(size_of_the_field):
             row.append("e")
         board.append(row)
+    return board
 
+
+def get_the_field(board, size_of_the_field, number_of_bombs, start_x, start_y, x, y, size_of_the_cube, size_of_the_display):
+    row = get_coordinate(start_y, y, size_of_the_display, size_of_the_cube)
+    column = get_coordinate(start_x, x, size_of_the_display, size_of_the_cube)
+    print(row, column)
+    StartRow, StartColumn, EndRow, EndColumn = check_range(row, column, size_of_the_field)
+    for i in range(StartRow, EndRow+1):
+        for j in range(StartColumn, EndColumn+1):
+            board[i][j] = "E"
     for i in range(number_of_bombs):
-        y = random.randint(0, size_of_the_field - 1)
-        x = random.randint(0, size_of_the_field - 1)
+        Y = random.randint(0, size_of_the_field - 1)
+        X = random.randint(0, size_of_the_field - 1)
 
-        while board[x][y] != "e":
-            y = random.randint(0, size_of_the_field - 1)
-            x = random.randint(0, size_of_the_field - 1)
-        board[x][y] = "b"
+        while board[X][Y] != "e":
+            Y = random.randint(0, size_of_the_field - 1)
+            X = random.randint(0, size_of_the_field - 1)
+        board[X][Y] = "b"
     for i in range(size_of_the_field):
         for j in range(size_of_the_field):
             if board[i][j] != "b":
@@ -57,7 +66,7 @@ def number_place(board, row, column, size_of_the_field):
             if board[i][j] == "b":
                 counter_of_bombs += 1
 
-    if board[row][column] == "e" and board[row][column] != "b":
+    if (board[row][column] == "e" or board[row][column] == "E") and board[row][column] != "b":
         board[row][column] = counter_of_bombs
     return board
 
@@ -98,7 +107,7 @@ def get_coordinate(start, coordinate, size_of_the_board, size_of_the_cube):
 def define_coordinate(start_x, start_y, x, y, size_of_the_field, size_of_the_cube, change_board, board, size_of_the_board):
     list_number = get_coordinate(start_y, y, size_of_the_field, size_of_the_cube)
     item_number = get_coordinate(start_x, x, size_of_the_field, size_of_the_cube)
-
+    print(list_number, item_number,"E")
     change_board = zeros(board, change_board, list_number, item_number, size_of_the_board)
 
     return change_board

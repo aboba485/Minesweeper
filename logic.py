@@ -1,6 +1,7 @@
 import random
 
 
+
 def get_the_field(size_of_the_field, number_of_bombs):
     board = []
     for i in range(size_of_the_field):
@@ -103,11 +104,18 @@ def define_coordinate(start_x, start_y, x, y, size_of_the_field, size_of_the_cub
     return change_board
 
 
-def place_flag(start_x, start_y, x, y, size_of_the_field, size_of_the_cube, change_board):
-    list_number = get_coordinate(start_y, y, size_of_the_field, size_of_the_cube)
-    item_number = get_coordinate(start_x, x, size_of_the_field, size_of_the_cube)
-    change_board[list_number][item_number] = ">"
+def place_flag(start_x, start_y, x, y, size_of_the_field_in_px, size_of_the_cube, change_board, number_of_bombs, size_of_the_field):
+    list_number = get_coordinate(start_y, y, size_of_the_field_in_px, size_of_the_cube)
+    item_number = get_coordinate(start_x, x, size_of_the_field_in_px, size_of_the_cube)
+
+    if change_board[list_number][item_number] == "-" and number_of_bombs > count_flags(change_board, size_of_the_field):
+        change_board[list_number][item_number] = ">"
+    elif change_board[list_number][item_number] == ">":
+        change_board[list_number][item_number] = "-"
+
     return change_board
+
+
 
 
 def count_correct_flags(board, change_board, size_of_the_field):
@@ -126,3 +134,6 @@ def count_flags(change_board, size_of_the_field):
             if change_board[i][j] == ">":
                 counter += 1
     return counter
+
+
+# def get_check_win(chag)

@@ -1,14 +1,22 @@
 import pygame
+import logic
 
-
-def draw_a_counter_of_the_time(start_ticks, screen, background_color):
+def draw_a_counter_of_the_time(start_ticks, screen, background_color, freeze_timer=False):
     font_for_clock = pygame.font.Font(None, 36)
-    elapsed_ticks = pygame.time.get_ticks() - start_ticks
+
+    if not hasattr(draw_a_counter_of_the_time, "frozen_time"):
+        draw_a_counter_of_the_time.frozen_time = 0
+
+    if freeze_timer:
+        elapsed_ticks = draw_a_counter_of_the_time.frozen_time
+    else:
+        elapsed_ticks = pygame.time.get_ticks() - start_ticks
+        draw_a_counter_of_the_time.frozen_time = elapsed_ticks
+
     seconds = (elapsed_ticks // 1000) % 60
     minutes = (elapsed_ticks // 1000) // 60
     text = font_for_clock.render(f"min: {minutes} sec: {seconds}", True, background_color)
     screen.blit(text, (280, 0))
-
 
 def draw_a_cube(size, x_coord, y_coord, primary_color, secondary_color, screen):
     pygame.draw.rect(screen, primary_color, pygame.Rect(x_coord, y_coord, size, size))
@@ -16,8 +24,9 @@ def draw_a_cube(size, x_coord, y_coord, primary_color, secondary_color, screen):
 
 
 def draw_a_board(field, size_of_the_display, start_x, start_y, cells_color_background, cells_boarders_color, font_color,
-                 changed_field, screen, banners_font_color, banners_font_size):
+                 changed_field, screen, banners_font_color, banners_font_size, number_of_bombs, size_of_the_field):
     lost = False
+    won = False
     rows = len(field)
     cols = len(field[0])
     size_of_the_cube = size_of_the_display // cols
@@ -30,7 +39,7 @@ def draw_a_board(field, size_of_the_display, start_x, start_y, cells_color_backg
             draw_a_cube(size_of_the_cube, x, y, cells_color_background, cells_boarders_color, screen)
 
             if changed_field[i][j] != "-":
-                if field[i][j] == "b":
+                if field[i][j] == "b" and changed_field[i][j] != ">":
                     lost = True
 
                 font_size = int(size_of_the_cube * 0.65)
@@ -39,11 +48,17 @@ def draw_a_board(field, size_of_the_display, start_x, start_y, cells_color_backg
 
                 if changed_field[i][j] != ">":
                     draw_a_number(str(field[i][j]), number_x, number_y, font_color, font_size, screen)
-                else:
+                elif changed_field[i][j] == ">":
                     draw_a_number(">", number_x, number_y, font_color, font_size, screen)
+
+    if logic.count_correct_flags(field, changed_field, size_of_the_field) == number_of_bombs:
+        won = True
+        draw_win_screen(screen, banners_font_color, banners_font_size)
 
     if lost:
         draw_loose_screen(screen, banners_font_color, banners_font_size)
+
+    return not (lost or won)
 
 
 def draw_a_number(number, x, y, color, font_size, screen):
@@ -59,3 +74,14 @@ def draw_loose_screen(screen, font_color, font_size):
     screen_height = screen.get_height()
     text_rect = text.get_rect(center=(screen_width // 2, screen_height // 2))
     screen.blit(text, text_rect)
+
+
+def draw_win_screen(screen, font_color, font_size):
+    font = pygame.font.Font(None, font_size)
+    text = font.render("You won!", True, font_color)
+    screen_width = screen.get_width()
+    screen_height = screen.get_height()
+    text_rect = text.get_rect(center=(screen_width // 2, screen_height // 2))
+    screen.blit(text, text_rect)
+
+

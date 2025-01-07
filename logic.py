@@ -12,13 +12,16 @@ def get_empty_field(size_of_the_field):
 
 
 def get_the_field(board, size_of_the_field, number_of_bombs, start_x, start_y, x, y, size_of_the_cube, size_of_the_display):
-    row = get_coordinate(start_y, y, size_of_the_display, size_of_the_cube)
-    column = get_coordinate(start_x, x, size_of_the_display, size_of_the_cube)
+    row = get_coordinate(start_y, y, size_of_the_display, size_of_the_cube+2)
+    column = get_coordinate(start_x, x, size_of_the_display, size_of_the_cube+2)
     print(row, column)
     StartRow, StartColumn, EndRow, EndColumn = check_range(row, column, size_of_the_field)
-    for i in range(StartRow, EndRow+1):
-        for j in range(StartColumn, EndColumn+1):
-            board[i][j] = "E"
+    try:
+        for i in range(StartRow, EndRow+1):
+            for j in range(StartColumn, EndColumn+1):
+                board[i][j] = "E"
+    except:
+        return False
     for i in range(number_of_bombs):
         Y = random.randint(0, size_of_the_field - 1)
         X = random.randint(0, size_of_the_field - 1)
@@ -101,20 +104,21 @@ def get_coordinate(start, coordinate, size_of_the_board, size_of_the_cube):
         if i > coordinate > i - size_of_the_cube:
             return counter
         counter += 1
+    print(counter)
     return counter
 
 
 def define_coordinate(start_x, start_y, x, y, size_of_the_field, size_of_the_cube, change_board, board, size_of_the_board):
-    list_number = get_coordinate(start_y, y, size_of_the_field, size_of_the_cube)
-    item_number = get_coordinate(start_x, x, size_of_the_field, size_of_the_cube)
+    list_number = get_coordinate(start_y, y, size_of_the_field, size_of_the_cube+2)
+    item_number = get_coordinate(start_x, x, size_of_the_field, size_of_the_cube+2)
     change_board = zeros(board, change_board, list_number, item_number, size_of_the_board)
 
     return change_board
 
 
 def place_flag(start_x, start_y, x, y, size_of_the_field_in_px, size_of_the_cube, change_board, number_of_bombs, size_of_the_field):
-    list_number = get_coordinate(start_y, y, size_of_the_field_in_px, size_of_the_cube)
-    item_number = get_coordinate(start_x, x, size_of_the_field_in_px, size_of_the_cube)
+    list_number = get_coordinate(start_y, y, size_of_the_field_in_px, size_of_the_cube+2)
+    item_number = get_coordinate(start_x, x, size_of_the_field_in_px, size_of_the_cube+2)
 
     if change_board[list_number][item_number] == "-" and number_of_bombs > count_flags(change_board, size_of_the_field):
         change_board[list_number][item_number] = ">"

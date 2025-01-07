@@ -79,7 +79,7 @@ def draw_win_screen(screen, font_color, font_size):
     panel_y = screen_height // 2 - panel_height // 2
 
     panel = pygame.Surface((panel_width, panel_height))
-    panel.fill((50, 50, 50))  # Dark gray background
+    panel.fill((50, 50, 50))
 
     text = font.render("You won!", True, font_color)
     text_rect = text.get_rect(center=(panel_width // 2, 50))
@@ -110,6 +110,13 @@ def draw_win_screen(screen, font_color, font_size):
     )
 
 
+def draw_bomb(x, y, size, screen):
+    bomb_color = (0, 0, 0)
+    center_x = x + size // 2
+    center_y = y + size // 2
+    radius = size // 4
+    pygame.draw.circle(screen, bomb_color, (center_x, center_y), radius)
+
 def draw_a_board(field, size_of_the_display, start_x, start_y, closed_color, opened_color, border_color,
                  changed_field, screen, banners_font_color, banners_font_size, number_of_bombs, size_of_the_field):
     lost = False
@@ -125,15 +132,20 @@ def draw_a_board(field, size_of_the_display, start_x, start_y, closed_color, ope
             y = start_y + i * size_of_the_cube
 
             if changed_field[i][j] == "-":
-                draw_a_cube(size_of_the_cube, x, y, closed_color, border_color, screen)
+                if field[i][j] == "b" and any(changed_field[r][c] != "-" and field[r][c] == "b"
+                                            for r in range(rows) for c in range(cols)):
+                    draw_a_cube(size_of_the_cube, x, y, opened_color, border_color, screen)
+                    draw_bomb(x, y, size_of_the_cube, screen)
+                else:
+                    draw_a_cube(size_of_the_cube, x, y, closed_color, border_color, screen)
             elif changed_field[i][j] == ">":
                 draw_a_cube(size_of_the_cube, x, y, closed_color, border_color, screen)
                 draw_flag_icon(x, y, size_of_the_cube, screen)
             else:
                 draw_a_cube(size_of_the_cube, x, y, opened_color, border_color, screen)
-
-                if field[i][j] == "b" and changed_field[i][j] != ">":
+                if field[i][j] == "b":
                     lost = True
+                    draw_bomb(x, y, size_of_the_cube, screen)
                 elif field[i][j] != 0:
                     font_size = int(size_of_the_cube * 0.65)
                     number_x = x + (size_of_the_cube / 2) - (font_size / 6)

@@ -20,7 +20,7 @@ def draw_a_counter_of_the_time(start_ticks, screen, background_color, freeze_tim
 
 def draw_a_cube(size, x_coord, y_coord, primary_color, secondary_color, screen):
     pygame.draw.rect(screen, primary_color, pygame.Rect(x_coord, y_coord, size, size))
-    pygame.draw.rect(screen, secondary_color, pygame.Rect(x_coord, y_coord, size, size), 2)
+    pygame.draw.rect(screen, secondary_color, pygame.Rect(x_coord, y_coord, size, size), 4)
 
 
 def draw_a_board(field, size_of_the_display, start_x, start_y, cells_color_background, cells_boarders_color, font_color,

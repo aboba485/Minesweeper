@@ -107,7 +107,6 @@ def get_coordinate(start, coordinate, size_of_the_board, size_of_the_cube):
 def define_coordinate(start_x, start_y, x, y, size_of_the_field, size_of_the_cube, change_board, board, size_of_the_board):
     list_number = get_coordinate(start_y, y, size_of_the_field, size_of_the_cube)
     item_number = get_coordinate(start_x, x, size_of_the_field, size_of_the_cube)
-    print(list_number, item_number,"E")
     change_board = zeros(board, change_board, list_number, item_number, size_of_the_board)
 
     return change_board

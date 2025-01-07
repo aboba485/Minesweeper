@@ -85,3 +85,53 @@ def draw_win_screen(screen, font_color, font_size):
     screen.blit(text, text_rect)
 
 
+DIFFICULTY = {
+    "Easy": {"field_size": 5, "bombs": 1},
+    "Medium": {"field_size": 10, "bombs": 1},
+    "Hard": {"field_size": 15, "bombs": 1},
+}
+
+
+def show_menu(screen, display_size, background_color, text_color, button_text_color):
+    font = pygame.font.Font(None, 70)
+    small_font = pygame.font.Font(None, 50)
+
+    while True:
+        screen.fill(background_color)
+
+        title_text = font.render("Choose Difficulty", True, text_color)
+        screen.blit(
+            title_text,
+            (display_size // 2 - title_text.get_width() // 2, 50),
+        )
+
+        button_y = 150
+        for idx, level in enumerate(DIFFICULTY.keys()):
+            button_text = small_font.render(level, True, button_text_color)
+            button_rect = pygame.Rect(
+                display_size // 2 - 100, button_y + idx * 100, 200, 50
+            )
+            pygame.draw.rect(screen, text_color, button_rect)
+            screen.blit(
+                button_text,
+                (
+                    button_rect.x + (button_rect.width - button_text.get_width()) // 2,
+                    button_rect.y + (button_rect.height - button_text.get_height()) // 2,
+                ),
+            )
+
+        pygame.display.flip()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = pygame.mouse.get_pos()
+                button_y = 150
+                for idx, level in enumerate(DIFFICULTY.keys()):
+                    button_rect = pygame.Rect(
+                        display_size // 2 - 100, button_y + idx * 100, 200, 50
+                    )
+                    if button_rect.collidepoint(x, y):
+                        return DIFFICULTY[level]

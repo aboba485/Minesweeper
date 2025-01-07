@@ -22,10 +22,99 @@ def draw_a_cube(size, x_coord, y_coord, primary_color, secondary_color, screen, 
     pygame.draw.rect(screen, primary_color, pygame.Rect(x_coord, y_coord, size, size))
     pygame.draw.rect(screen, secondary_color, pygame.Rect(x_coord, y_coord, size, size), border_thickness)
 
+
+def draw_loose_screen(screen, font_color, font_size):
+    font = pygame.font.Font(None, font_size)
+    small_font = pygame.font.Font(None, font_size // 2)
+
+    screen_width = screen.get_width()
+    screen_height = screen.get_height()
+
+    panel_width = 300
+    panel_height = 200
+    panel_x = screen_width // 2 - panel_width // 2
+    panel_y = screen_height // 2 - panel_height // 2
+
+    panel = pygame.Surface((panel_width, panel_height))
+    panel.fill((50, 50, 50))
+
+    text = font.render("You lost!", True, font_color)
+    text_rect = text.get_rect(center=(panel_width // 2, 50))
+    panel.blit(text, text_rect)
+
+    button_width = 200
+    button_height = 40
+    button_x = panel_width // 2 - button_width // 2
+
+    play_again_button = pygame.Rect(button_x, 90, button_width, button_height)
+    pygame.draw.rect(panel, (70, 70, 70), play_again_button)
+    play_text = small_font.render("Play Again", True, font_color)
+    play_text_rect = play_text.get_rect(center=play_again_button.center)
+    panel.blit(play_text, play_text_rect)
+
+    menu_button = pygame.Rect(button_x, 140, button_width, button_height)
+    pygame.draw.rect(panel, (70, 70, 70), menu_button)
+    menu_text = small_font.render("Main Menu", True, font_color)
+    menu_text_rect = menu_text.get_rect(center=menu_button.center)
+    panel.blit(menu_text, menu_text_rect)
+
+    screen.blit(panel, (panel_x, panel_y))
+
+    return (
+        pygame.Rect(panel_x + button_x, panel_y + 90, button_width, button_height),
+        pygame.Rect(panel_x + button_x, panel_y + 140, button_width, button_height)
+    )
+
+
+def draw_win_screen(screen, font_color, font_size):
+    font = pygame.font.Font(None, font_size)
+    small_font = pygame.font.Font(None, font_size // 2)
+
+    screen_width = screen.get_width()
+    screen_height = screen.get_height()
+
+    panel_width = 300
+    panel_height = 200
+    panel_x = screen_width // 2 - panel_width // 2
+    panel_y = screen_height // 2 - panel_height // 2
+
+    panel = pygame.Surface((panel_width, panel_height))
+    panel.fill((50, 50, 50))  # Dark gray background
+
+    text = font.render("You won!", True, font_color)
+    text_rect = text.get_rect(center=(panel_width // 2, 50))
+    panel.blit(text, text_rect)
+
+    button_width = 200
+    button_height = 40
+    button_x = panel_width // 2 - button_width // 2
+
+    play_again_button = pygame.Rect(button_x, 90, button_width, button_height)
+    pygame.draw.rect(panel, (70, 70, 70), play_again_button)
+    play_text = small_font.render("Play Again", True, font_color)
+    play_text_rect = play_text.get_rect(center=play_again_button.center)
+    panel.blit(play_text, play_text_rect)
+
+    menu_button = pygame.Rect(button_x, 140, button_width, button_height)
+    pygame.draw.rect(panel, (70, 70, 70), menu_button)
+    menu_text = small_font.render("Main Menu", True, font_color)
+    menu_text_rect = menu_text.get_rect(center=menu_button.center)
+    panel.blit(menu_text, menu_text_rect)
+
+    screen.blit(panel, (panel_x, panel_y))
+
+    return (
+        pygame.Rect(panel_x + button_x, panel_y + 90, button_width, button_height),
+        pygame.draw.rect(screen, (70, 70, 70),
+                         pygame.Rect(panel_x + button_x, panel_y + 140, button_width, button_height))
+    )
+
+
 def draw_a_board(field, size_of_the_display, start_x, start_y, closed_color, opened_color, border_color,
                  changed_field, screen, banners_font_color, banners_font_size, number_of_bombs, size_of_the_field):
     lost = False
     won = False
+    buttons = None
     rows = len(field)
     cols = len(field[0])
     size_of_the_cube = size_of_the_display // cols
@@ -45,7 +134,7 @@ def draw_a_board(field, size_of_the_display, start_x, start_y, closed_color, ope
 
                 if field[i][j] == "b" and changed_field[i][j] != ">":
                     lost = True
-                elif field[i][j] != 0:  # Don't display 0
+                elif field[i][j] != 0:
                     font_size = int(size_of_the_cube * 0.65)
                     number_x = x + (size_of_the_cube / 2) - (font_size / 6)
                     number_y = y + (size_of_the_cube / 2) - (font_size / 4.5)
@@ -53,12 +142,12 @@ def draw_a_board(field, size_of_the_display, start_x, start_y, closed_color, ope
 
     if logic.count_correct_flags(field, changed_field, size_of_the_field) == number_of_bombs:
         won = True
-        draw_win_screen(screen, banners_font_color, banners_font_size)
+        buttons = draw_win_screen(screen, banners_font_color, banners_font_size)
 
     if lost:
-        draw_loose_screen(screen, banners_font_color, banners_font_size)
+        buttons = draw_loose_screen(screen, banners_font_color, banners_font_size)
 
-    return not (lost or won)
+    return (not (lost or won)), buttons
 
 
 def draw_flag_icon(x, y, size, screen):
@@ -97,25 +186,6 @@ def draw_a_number(number, x, y, font_size, screen):
     font = pygame.font.Font(None, font_size)
     text = font.render(number, True, color)
     screen.blit(text, (x, y))
-
-
-def draw_loose_screen(screen, font_color, font_size):
-    font = pygame.font.Font(None, font_size)
-    text = font.render("You lost!", True, font_color)
-    screen_width = screen.get_width()
-    screen_height = screen.get_height()
-    text_rect = text.get_rect(center=(screen_width // 2, screen_height // 2))
-    # rect = pygame.draw.rect(screen)
-    screen.blit(text, text_rect)
-
-
-def draw_win_screen(screen, font_color, font_size):
-    font = pygame.font.Font(None, font_size)
-    text = font.render("You won!", True, font_color)
-    screen_width = screen.get_width()
-    screen_height = screen.get_height()
-    text_rect = text.get_rect(center=(screen_width // 2, screen_height // 2))
-    screen.blit(text, text_rect)
 
 
 DIFFICULTY = {
